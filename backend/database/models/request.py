@@ -9,6 +9,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from database.base import Base
 from database.models.regions import Region
 from database.models.attachments import Attachment
+from database.models.user import User
 
 from services.google_cloud_storage import GoogleCloudStorage
 
@@ -32,6 +33,7 @@ class Request(Base):
     attachment_id: Mapped[int] = mapped_column(sa.ForeignKey("attachments.id"))
     attachment = relationship("Attachment", lazy="selectin")
     is_closed: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
+    comments = relationship("RequestComment", back_populates="request")
 
     @hybrid_property
     def photo(self):
@@ -39,3 +41,14 @@ class Request(Base):
 
     def __repr__(self):
         return f'Request {self.id}'
+
+
+class RequestComment(Base):
+    __tablename__ = 'comments'
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    request_id: Mapped[int] = mapped_column(sa.ForeignKey("requests.id"))
+    request = relationship("Request", back_populates="comments")
+    text: Mapped[str]
+    created_by_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
+    created_by = relationship("Users")
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(), default=datetime.utcnow)

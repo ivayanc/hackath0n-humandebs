@@ -19,7 +19,7 @@ if config.config_file_name is not None:
 
 # ADD MODELS HERE
 from database.models.regions import Region
-from database.models.request import Request
+from database.models.request import Request, RequestComment
 from database.models.user import User
 from database.models.attachments import Attachment
 target_metadata = Base.metadata

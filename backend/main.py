@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers.public_api import router as public_api_router
 from routers.auth import router as auth_router
+from routers.regions import router as region_router
+from routers.requests import router as request_router
 
 app = FastAPI()
 
@@ -16,3 +18,5 @@ app.add_middleware(
 
 app.include_router(public_api_router)
 app.include_router(auth_router)
+app.include_router(region_router)
+app.include_router(request_router)

@@ -27,4 +27,9 @@ class RequestService:
     def count_requests(is_closed: bool = False) -> int:
         with session() as s:
             return s.query(Request).filter(Request.is_closed==is_closed).count()
-    
+
+    @staticmethod
+    def list(is_closed: bool = False) -> list[Request]:
+        with session() as s:
+            return s.query(Request).filter(Request.is_closed == is_closed).all()
+        
