@@ -22,3 +22,9 @@ class RequestService:
             s.commit()
             s.refresh(instance)
         return instance
+
+    @staticmethod
+    def count_requests(is_closed: bool = False) -> int:
+        with session() as s:
+            return s.query(Request).filter(Request.is_closed==is_closed).count()
+    

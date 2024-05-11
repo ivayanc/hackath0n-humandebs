@@ -25,6 +25,7 @@ class Request(Base):
     last_location_latitude: Mapped[float]
     region_id: Mapped[int] = mapped_column(sa.ForeignKey("regions.id"))
     region = relationship("Region", lazy="selectin")
+    is_closed: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
 
     def __repr__(self):
         return f'Request {self.id}'
