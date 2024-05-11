@@ -22,6 +22,7 @@ from database.models.regions import Region
 from database.models.request import Request, RequestComment
 from database.models.user import User
 from database.models.attachments import Attachment
+from database.models.routes import Route, RouteCheckpoint
 target_metadata = Base.metadata
 
 config.set_main_option('sqlalchemy.url', DB_URL)

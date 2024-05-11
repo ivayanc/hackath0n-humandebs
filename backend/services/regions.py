@@ -20,7 +20,26 @@ class RegionsService:
         nearest_value, nearest_region = None, None
         for region in regions:
             distance = region.calculate_distance(longitude, latitude)
-            if not nearest_value or nearest_value > distance:
+            if nearest_value is None or nearest_value > distance:
                 nearest_value = distance
                 nearest_region = region
         return nearest_region
+
+    @staticmethod
+    def get_nearest_regions(longitude: float, latitude: float, max_distance: float) -> Optional[Region]:
+        from services.requests import RequestService
+
+        regions = RegionsService.list()
+        results = []
+        for region in regions:
+            distance = region.calculate_distance(longitude, latitude)
+            print(distance, region.id)
+            if distance > max_distance:
+                continue
+            requests_count = RequestService.count_requests_in_region(region.id)
+            print(requests_count)
+            if requests_count == 0:
+                continue
+            results.append((region.latitude, region.longitude, distance, region.id))
+        results = sorted(results, key = lambda x: x[2])
+        return results
