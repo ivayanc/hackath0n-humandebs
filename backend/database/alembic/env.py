@@ -18,6 +18,8 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # ADD MODELS HERE
+from database.models.regions import Region
+from database.models.request import Request
 target_metadata = Base.metadata
 
 config.set_main_option('sqlalchemy.url', DB_URL)
