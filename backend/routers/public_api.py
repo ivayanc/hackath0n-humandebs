@@ -7,7 +7,7 @@ from database.models.request import Request
 
 from models.requests import CreateRequestDTO, ReadRequestDTO
 from models.dashboards import PublicDashboardDTO
-from models.attachments import ReadAttachmentDTO
+from models.attachments import ReadAttachmentDTO, CreateAttachmentDTO
 
 from services.requests import RequestService
 from services.dashboards import PublicDashboardService
@@ -21,8 +21,8 @@ router = APIRouter(
 
 
 @router.post('/upload/file', status_code=status.HTTP_201_CREATED)
-async def upload_image(file: UploadFile = File(...)) -> ReadAttachmentDTO:
-    return await AttachmentService.upload_file(file)
+async def upload_image(dto: CreateAttachmentDTO) -> ReadAttachmentDTO:
+    return await AttachmentService.upload_file(dto)
 
 @router.post("/request/create/", status_code=status.HTTP_201_CREATED)
 async def create_request(dto: CreateRequestDTO) -> ReadRequestDTO:

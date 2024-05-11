@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import os
+import re
+import base64
 
 from datetime import timedelta
 from uuid import uuid4
-from pathlib import Path
 
 from google.cloud import storage
 
@@ -17,8 +18,30 @@ class GoogleCloudStorage:
         self.storage_client = storage.Client()
         self.bucket = self.storage_client.bucket('hackhaton-images')
 
-    def upload_file(self: GoogleCloudStorage, filename: str, content: str, content_type: str) -> str:
-        extension = Path(filename).suffix
+    def upload_file(self: GoogleCloudStorage, file_data: str) -> str:
+        def get_content_type_and_extension(base64_string):
+            if ',' in base64_string:
+                header, _ = base64_string.split(',', 1)
+            else:
+                return None, None
+
+            content_type = header.split(';')[0].replace('data:', '')
+
+            if content_type == "image/jpeg":
+                extension = ".jpg"
+            elif content_type == "image/png":
+                extension = ".png"
+            elif content_type == "image/gif":
+                extension = ".gif"
+            else:
+                extension = ""
+
+            return content_type, extension
+
+        content_type, extension = get_content_type_and_extension(file_data)
+        if ',' in file_data:
+            file_data = file_data.split(',')[1]
+        content = base64.b64decode(file_data)
         filename = f'{uuid4()}{extension}'
         blob = self.bucket.blob(filename)
         blob.upload_from_string(content, content_type=content_type)
