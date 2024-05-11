@@ -8,3 +8,7 @@ from database.models.user import User
 class TokensDTO(BaseModel):
     access_token: str
     refresh_token: str
+
+
+class DataTokenDTO(BaseModel):
+    email: str

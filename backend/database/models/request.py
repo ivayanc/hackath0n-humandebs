@@ -50,5 +50,5 @@ class RequestComment(Base):
     request = relationship("Request", back_populates="comments")
     text: Mapped[str]
     created_by_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
-    created_by = relationship("Users")
+    created_by = relationship("User")
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(), default=datetime.utcnow)

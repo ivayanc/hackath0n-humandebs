@@ -1,6 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 
 from database.base import Session
 
@@ -8,7 +8,7 @@ from models.users import CreateUserDTO, ReadUserDTO, LoginUserDTO
 from models.auth import TokensDTO
 
 from services.users import UserService
-from services.auth import AuthService
+from services.auth import AuthService, AuthException
 
 router = APIRouter(
     prefix='/auth',
@@ -24,4 +24,8 @@ def create_users(dto: CreateUserDTO) -> ReadUserDTO:
 
 @router.post('/login/')
 def login(dto: LoginUserDTO) -> TokensDTO:
-    return AuthService.login(dto)
+    try:
+        return AuthService.login(dto)
+    except AuthException as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail=str(e))
