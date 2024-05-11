@@ -19,6 +19,7 @@ class CreateRequestDTO(BaseModel):
     is_soldier: bool
     last_location_longitude: float
     last_location_latitude: float
+    attachment_id: int
 
     def to_orm(self: CreateRequestDTO) -> Request:
         return Request(
@@ -32,7 +33,8 @@ class CreateRequestDTO(BaseModel):
             probably_dead=self.probably_dead,
             is_soldier=self.is_soldier,
             last_location_longitude=self.last_location_longitude,
-            last_location_latitude=self.last_location_latitude
+            last_location_latitude=self.last_location_latitude,
+            attachment_id=self.attachment_id
         )
 
 
@@ -50,3 +52,4 @@ class ReadRequestDTO(BaseModel):
     last_location_longitude: float
     last_location_latitude: float
     region: ReadRegionDTO
+    photo: str

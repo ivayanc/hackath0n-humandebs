@@ -21,6 +21,7 @@ if config.config_file_name is not None:
 from database.models.regions import Region
 from database.models.request import Request
 from database.models.user import User
+from database.models.attachments import Attachment
 target_metadata = Base.metadata
 
 config.set_main_option('sqlalchemy.url', DB_URL)

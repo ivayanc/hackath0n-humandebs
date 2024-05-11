@@ -4,9 +4,13 @@ from datetime import datetime
 import sqlalchemy as sa
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from database.base import Base
 from database.models.regions import Region
+from database.models.attachments import Attachment
+
+from services.google_cloud_storage import GoogleCloudStorage
 
 
 class Request(Base):
@@ -25,7 +29,13 @@ class Request(Base):
     last_location_latitude: Mapped[float]
     region_id: Mapped[int] = mapped_column(sa.ForeignKey("regions.id"))
     region = relationship("Region", lazy="selectin")
+    attachment_id: Mapped[int] = mapped_column(sa.ForeignKey("attachments.id"))
+    attachment = relationship("Attachment", lazy="selectin")
     is_closed: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
+
+    @hybrid_property
+    def photo(self):
+        return GoogleCloudStorage().generate_url(self.attachment.file_name)
 
     def __repr__(self):
         return f'Request {self.id}'
