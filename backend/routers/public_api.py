@@ -11,7 +11,6 @@ from models.dashboards import PublicDashboardDTO
 from services.requests import RequestService
 from services.dashboards import PublicDashboardService
 
-from utils.database import get_db
 
 router = APIRouter(
     prefix='/public_api',
