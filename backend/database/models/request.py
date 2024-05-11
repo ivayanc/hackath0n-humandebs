@@ -23,6 +23,9 @@ class Request(Base):
     description: Mapped[str]
     completed_actions: Mapped[str]
     phone_number: Mapped[str]
+    contact_first_name: Mapped[str]
+    contact_last_name: Mapped[str]
+    contact_surname: Mapped[str]
     contact_phone_number: Mapped[str]
     probably_dead: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
     is_soldier: Mapped[bool] = mapped_column(sa.Boolean(), default=False)

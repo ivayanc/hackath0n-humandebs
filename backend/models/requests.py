@@ -14,6 +14,9 @@ class CreateRequestDTO(BaseModel):
     description: str
     completed_actions: str
     phone_number: str
+    contact_first_name: str
+    contact_last_name: str
+    contact_surname: str
     contact_phone_number: str
     probably_dead: bool
     is_soldier: bool
@@ -29,6 +32,9 @@ class CreateRequestDTO(BaseModel):
             description=self.description,
             completed_actions=self.completed_actions,
             phone_number=self.phone_number,
+            contact_first_name=self.contact_first_name,
+            contact_last_name=self.contact_last_name,
+            contact_surname=self.contact_surname,
             contact_phone_number=self.contact_phone_number,
             probably_dead=self.probably_dead,
             is_soldier=self.is_soldier,
