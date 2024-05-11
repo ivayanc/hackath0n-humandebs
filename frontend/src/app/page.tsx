@@ -1,95 +1,149 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+/* eslint-disable @next/next/no-img-element */
+import Link from 'next/link';
+import { Button } from 'primereact/button';
+import { StyleClass } from 'primereact/styleclass';
+import { classNames } from 'primereact/utils';
+import type { MutableRefObject, ReactNode } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+
+import type { InfoCardProps } from '@/components/molecules/InfoCard';
+import type { RegionStat } from '@/components/molecules/RegionTable';
+import type { HumanAddData } from '@/components/organisms/HumanAddInfoForm';
+import type { HumanData } from '@/components/organisms/HumanBaseInfoForm';
+import type { HumanContactData } from '@/components/organisms/HumanContactInfoForm';
+import type { HumanSearchDoneThingsData } from '@/components/organisms/HumanSearchDoneThingsForm';
+import HomePageTemplate from '@/components/templates/HomePageTemplate';
+import { LayoutContext } from '@/layout/context/layoutcontext';
+
+export type NodeRef = MutableRefObject<ReactNode>;
+
+const LandingPage = () => {
+  const [isHidden, setIsHidden] = useState(false);
+  const { layoutConfig } = useContext(LayoutContext);
+  const menuRef = useRef<HTMLElement | null>(null);
+
+  const toggleMenuItemClick = () => {
+    setIsHidden(prevState => !prevState);
+  };
+  const humanData: HumanData = {
+    firstName: '',
+    lastName: '',
+    fatherName: '',
+    phoneNumber: ''
+  };
+
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const j = 3;
+  };
+  const humanAddData: HumanAddData = {
+    humanDesc: '',
+    doneThings: ''
+  };
+
+  const stats: InfoCardProps[] = [
+    {
+      iconName: 'icon-person',
+      iconColor: '',
+      label: 'Кількість знайдених людей',
+      count: 1222
+    },
+    {
+      iconName: 'icon-phone',
+      iconColor: '',
+      label: 'Кількість зниклих людей',
+      count: 2222
+    },
+    {
+      iconName: 'icon-help',
+      iconColor: '',
+      label: 'Кількість активних волонтерів',
+      count: 222
+    }
+  ];
+
+  const tableData: RegionStat[] = [
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
+    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 }
+  ];
+
+  const humanSearchDonwThings: HumanSearchDoneThingsData = {
+    doneThings: ''
+  };
+  const humanContactData: HumanContactData = {
+    contactFathersName: '',
+    phoneNumber: '',
+    contactFirstName: '',
+    contactLastName: ''
+  };
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="surface-0 justify-content-center flex">
+      <div id="home" className="landing-wrapper overflow-hidden">
+        <div className="align-items-center justify-content-between relative mx-0 flex p-4 md:mx-6 lg:static lg:mx-8 lg:px-8">
+          <Link href="/" className="align-items-center flex">
+            <span className="text-900 line-height-3 mr-8 text-2xl font-medium">
+              {process.env.NEXT_PUBLIC_PROJECT_NAME}
+            </span>
+          </Link>
+          <StyleClass
+            nodeRef={menuRef as NodeRef}
+            selector="@next"
+            enterClassName="hidden"
+            leaveToClassName="hidden"
+            hideOnOutsideClick
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+            <i
+              ref={menuRef}
+              className="pi pi-bars text-700 block cursor-pointer text-4xl lg:hidden"
             />
-          </a>
+          </StyleClass>
+          <div
+            className={classNames(
+              'align-items-center surface-0 flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full left-0 px-6 lg:px-0 z-2',
+              { hidden: isHidden }
+            )}
+            style={{ top: '100%' }}
+          >
+            <div className="justify-content-between border-top-1 lg:border-top-none surface-border mt-3 flex py-3 lg:mt-0 lg:block lg:py-0">
+              <Link href="/login">
+                <Button
+                  label="Я волонтер"
+                  text
+                  rounded
+                  className="line-height-2 border-none font-light text-blue-500"
+                />
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex-auto p-3">
+          <HomePageTemplate
+            stats={stats}
+            listRegionData={tableData}
+          />
+        </div>
+        <div className="mx-0 mt-8 p-4 lg:mx-8">
+          <div className="justify-content-between grid">
+            <div className="col-12 md:col-2" style={{ marginTop: '-1.5rem' }}>
+              <Link
+                href="/"
+                className="align-items-center justify-content-center md:justify-content-start mb-3 flex cursor-pointer flex-wrap md:mb-0"
+              >
+                <span className="text-900 text-3xl font-medium">
+                  {process.env.NEXT_PUBLIC_PROJECT_NAME}
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default LandingPage;
