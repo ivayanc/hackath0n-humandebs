@@ -10,3 +10,10 @@ class ReadRegionDTO(BaseModel):
     region_name: str
     longitude: float
     latitude: float
+
+
+class ReadRegionPlaceDTO(BaseModel):
+    id: int
+    place_name: str
+    longitude: float
+    latitude: float

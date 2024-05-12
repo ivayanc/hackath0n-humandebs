@@ -18,7 +18,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # ADD MODELS HERE
-from database.models.regions import Region
+from database.models.regions import Region, RegionPlace
 from database.models.request import Request, RequestComment
 from database.models.user import User
 from database.models.attachments import Attachment

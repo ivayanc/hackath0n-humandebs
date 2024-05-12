@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from database.base import session
-from database.models.regions import Region
+from database.models.regions import Region, RegionPlace
 
 
 class RegionsService:
@@ -57,3 +57,10 @@ class RegionsService:
             )
         response = sorted(response, key=lambda x: x['open_requests'], reverse=True)
         return response[:5]
+
+
+class RegionPlaceService:
+    @staticmethod
+    def get_places_by_region(region_id: int) -> list[RegionPlace]:
+        with session() as s:
+            return s.query(RegionPlace).filter(RegionPlace.region_id == region_id).all()

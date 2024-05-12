@@ -23,3 +23,13 @@ class Region(Base):
 
     def calculate_distance(self: Region, longitude: float, latitude: float) -> float:
         return haversine(self.latitude, self.longitude, latitude, longitude)
+
+
+class RegionPlace(Base):
+    __tablename__ = 'region_places'
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    region_id: Mapped[int] = mapped_column(sa.ForeignKey("regions.id"))
+    region = relationship("Region")
+    place_name: Mapped[str]
+    longitude: Mapped[float]
+    latitude: Mapped[float]
