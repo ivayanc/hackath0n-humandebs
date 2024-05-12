@@ -54,6 +54,9 @@ class ReadRequestDTO(BaseModel):
     description: str
     completed_actions: str
     phone_number: str
+    contact_first_name: str
+    contact_last_name: str
+    contact_surname: str
     contact_phone_number: str
     probably_dead: bool
     is_soldier: bool
