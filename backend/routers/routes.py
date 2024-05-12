@@ -26,6 +26,6 @@ async def list_routes(user: User = Depends(AuthService.get_current_user)) -> lis
     return RouteService.list()
 
 
-@router.get('route/{route_id}/checkpoints', status_code=status.HTTP_200_OK)
+@router.get('/{route_id}/checkpoints', status_code=status.HTTP_200_OK)
 async def get_checkpoints(route_id: int, user: User = Depends(AuthService.get_current_user)) -> list[ReadRouteCheckpointDTO]:
     return RouteCheckpointService.get_checkpoints_by_route(route_id)
