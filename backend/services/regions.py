@@ -33,11 +33,9 @@ class RegionsService:
         results = []
         for region in regions:
             distance = region.calculate_distance(longitude, latitude)
-            print(distance, region.id)
             if distance > max_distance:
                 continue
             requests_count = RequestService.count_requests_in_region(region.id)
-            print(requests_count)
             if requests_count == 0:
                 continue
             results.append((region.latitude, region.longitude, distance, region.id))

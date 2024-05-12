@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from pydantic import BaseModel
 
-from database.models.regions import Region
+from models.region import ReadRegionDTO
 
 
 class CreateRouteDTO(BaseModel):
@@ -15,5 +15,13 @@ class CreateRouteDTO(BaseModel):
 
 class ReadLightRouteDTO(BaseModel):
     id: int
+    route_location: str
     route_time: int
     created_at: datetime
+
+
+class ReadRouteCheckpointDTO(BaseModel):
+    id: int
+    region: ReadRegionDTO
+    position: int
+    google_map_url: str

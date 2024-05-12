@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional
 from datetime import datetime
 
@@ -17,6 +19,7 @@ from services.google_cloud_storage import GoogleCloudStorage
 class Route(Base):
     __tablename__ = 'routes'
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    route_location: Mapped[str]
     route_time: Mapped[int]
     created_by_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
     created_by = relationship("User")
@@ -35,3 +38,7 @@ class RouteCheckpoint(Base):
     route_id: Mapped[int] = mapped_column(sa.ForeignKey("routes.id"))
     route = relationship("Route", back_populates="checkpoints")
     position: Mapped[int]
+
+    @hybrid_property
+    def google_map_url(self: RouteCheckpoint) -> str:
+        return f'https://maps.google.com/?q={self.region.latitude},{self.region.longitude}'

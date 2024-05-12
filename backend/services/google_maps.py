@@ -26,3 +26,14 @@ class GoogleMapService:
         optimized_route = [point for point in optimized_order]
 
         return total_duration, optimized_route
+
+    def get_city(self: GoogleMapService, lat: float, lon: float):
+        reverse_geocode_result = self.client.reverse_geocode((lat, lon), language='uk')
+
+        if reverse_geocode_result:
+            for component in reverse_geocode_result[0]['address_components']:
+                if 'locality' in component['types']:
+                    return component['long_name']
+                elif 'administrative_area_level_1' in component['types']:
+                    return component['long_name']
+        return "Невідомо"
