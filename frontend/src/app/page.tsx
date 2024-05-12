@@ -10,10 +10,6 @@ import React, { useContext, useRef, useState } from 'react';
 
 import type { InfoCardProps } from '@/components/molecules/InfoCard';
 import type { RegionStat } from '@/components/molecules/RegionTable';
-import type { HumanAddData } from '@/components/organisms/HumanAddInfoForm';
-import type { HumanData } from '@/components/organisms/HumanBaseInfoForm';
-import type { HumanContactData } from '@/components/organisms/HumanContactInfoForm';
-import type { HumanSearchDoneThingsData } from '@/components/organisms/HumanSearchDoneThingsForm';
 import HomePageTemplate from '@/components/templates/HomePageTemplate';
 import { LayoutContext } from '@/layout/context/layoutcontext';
 
@@ -26,20 +22,6 @@ const LandingPage = () => {
 
   const toggleMenuItemClick = () => {
     setIsHidden(prevState => !prevState);
-  };
-  const humanData: HumanData = {
-    firstName: '',
-    lastName: '',
-    fatherName: '',
-    phoneNumber: ''
-  };
-
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const j = 3;
-  };
-  const humanAddData: HumanAddData = {
-    humanDesc: '',
-    doneThings: ''
   };
 
   const stats: InfoCardProps[] = [
@@ -72,15 +54,6 @@ const LandingPage = () => {
     { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 }
   ];
 
-  const humanSearchDonwThings: HumanSearchDoneThingsData = {
-    doneThings: ''
-  };
-  const humanContactData: HumanContactData = {
-    contactFathersName: '',
-    phoneNumber: '',
-    contactFirstName: '',
-    contactLastName: ''
-  };
   return (
     <div className="surface-0 justify-content-center flex">
       <div id="home" className="landing-wrapper overflow-hidden">
@@ -122,10 +95,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="flex-auto p-3">
-          <HomePageTemplate
-            stats={stats}
-            listRegionData={tableData}
-          />
+          <HomePageTemplate stats={stats} listRegionData={tableData} />
         </div>
         <div className="mx-0 mt-8 p-4 lg:mx-8">
           <div className="justify-content-between grid">

@@ -4,9 +4,10 @@ import { Button } from 'primereact/button';
 
 import Text from '@/components/atoms/Text';
 import { useAppSelector } from '@/hooks/useApp';
+import type { HumanRequest } from '@/lib/services /HumanRequestService';
+import { HumanRequestService } from '@/lib/services /HumanRequestService';
 
 export default function HumanSearchSummary() {
-  // Accessing the state from the Redux store
   const { firstName, lastName, fatherName, phoneNumber } = useAppSelector(
     state => state.baseInfo
   );
@@ -23,7 +24,26 @@ export default function HumanSearchSummary() {
     state => state.addInfo
   );
 
-  const handleConfirm = () => {};
+  const createData: HumanRequest = {
+    firstName,
+    lastName,
+    fatherName,
+    phoneNumber,
+    contactFathersName,
+    canBeDied,
+    military,
+    contactPhone,
+    contactLastName,
+    contactFirstName,
+    humanImage,
+    humanDesc,
+    doneThings,
+    longitude: location.longitude,
+    latitude: location.latitude
+  };
+  const handleConfirm = () => {
+    HumanRequestService.createRequest({ data: createData });
+  };
 
   const containerStyle = {
     width: '100%',
