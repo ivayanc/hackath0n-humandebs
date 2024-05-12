@@ -30,4 +30,8 @@ class ReadUserDTO(BaseModel):
 class LoginUserDTO(BaseModel):
     email: str
     password: str
+
+
+class RefreshDTO(BaseModel):
+    token: str
     

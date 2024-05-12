@@ -1,12 +1,12 @@
 from datetime import timedelta, datetime
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
-from models.users import LoginUserDTO
+from models.users import LoginUserDTO, RefreshDTO
 from models.auth import TokensDTO, DataTokenDTO
 
 from services.users import UserService
@@ -41,6 +41,42 @@ class AuthService:
             access_token=access_token,
             refresh_token=refresh_token
         )
+
+    @staticmethod
+    def refresh(dto: RefreshDTO):
+        data_token = AuthService.verify_refresh_token(
+            dto.token,
+            HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail='Wrong refresh token'
+            )
+        )
+        data_to_encode = {
+            "email": data_token.email
+        }
+
+        access_token = AuthService.create_access_token(data=data_to_encode)
+        refresh_token = AuthService.create_refresh_token(data=data_to_encode)
+        return TokensDTO(
+            access_token=access_token,
+            refresh_token=refresh_token
+        )
+
+    @staticmethod
+    def verify_refresh_token(token: str, credentials_exception):
+        try:
+            payload = jwt.decode(token, JWT_REFRESH_SECRET_KEY, algorithms=AuthService.ALGORITHM)
+
+            email: str = payload.get("email")
+
+            if email is None:
+                raise credentials_exception
+            token_data = DataTokenDTO(email=email)
+        except JWTError as e:
+            print(e)
+            raise credentials_exception
+
+        return token_data
 
     @staticmethod
     def create_access_token(data: dict):
