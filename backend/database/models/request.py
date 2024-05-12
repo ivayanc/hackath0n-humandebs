@@ -36,7 +36,7 @@ class Request(Base):
     attachment_id: Mapped[int] = mapped_column(sa.ForeignKey("attachments.id"))
     attachment = relationship("Attachment", lazy="selectin")
     is_closed: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
-    comments = relationship("RequestComment", back_populates="request")
+    comments = relationship("RequestComment", back_populates="request", lazy="selectin")
 
     @hybrid_property
     def photo(self):
@@ -53,5 +53,5 @@ class RequestComment(Base):
     request = relationship("Request", back_populates="comments")
     text: Mapped[str]
     created_by_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
-    created_by = relationship("User")
+    created_by = relationship("User", lazy="selectin")
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(), default=datetime.utcnow)

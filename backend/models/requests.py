@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from pydantic import BaseModel
+from datetime import datetime
 
 from database.models.request import Request
 
 from models.region import ReadRegionDTO
+from models.users import ReadUserDTO
 
 
 class CreateRequestDTO(BaseModel):
@@ -59,3 +61,13 @@ class ReadRequestDTO(BaseModel):
     last_location_latitude: float
     region: ReadRegionDTO
     photo: str
+    comments: list[ReadRequestCommentDTO]
+
+class PostCommentDTO(BaseModel):
+    comment: str
+
+
+class ReadRequestCommentDTO(BaseModel):
+    text: str
+    created_by: ReadUserDTO
+    created_at: datetime
