@@ -1,4 +1,4 @@
-import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import React, { useRef } from 'react';
@@ -78,6 +78,10 @@ export default function HumanSearchSummary() {
     width: '100%',
     height: '300px'
   };
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API || ''
+  });
   return (
     <div className="card p-fluid">
       <h5>Підтвердьте інформацію</h5>
@@ -126,11 +130,11 @@ export default function HumanSearchSummary() {
         <p>{doneThings || 'Немає інформації'}</p>
       </div>
       <div className="field">
-        {location.latitude && location.longitude && (
+        {isLoaded && location.latitude && location.longitude && (
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={{ lat: location.latitude, lng: location.longitude }}
-            zoom={15}
+            zoom={12}
             options={{
               zoomControl: false,
               scrollwheel: false,
@@ -139,7 +143,14 @@ export default function HumanSearchSummary() {
               streetViewControl: false,
               mapTypeControl: false
             }}
-          />
+          >
+            <Marker
+              position={{
+                lat: location.latitude,
+                lng: location.longitude
+              }}
+            />
+          </GoogleMap>
         )}
       </div>
       <Button label="Підтвердити" onClick={handleConfirm} />

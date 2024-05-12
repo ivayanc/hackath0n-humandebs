@@ -1,6 +1,6 @@
 'use client';
 
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
@@ -54,38 +54,56 @@ export default function Page({ params }: { params: { id: number } }) {
   }, [router, params.id]);
 
   const containerStyle = {
-    width: '400px',
-    height: '300px'
+    width: '200px',
+    height: '200px'
   };
 
-  const center = {
-    lat: -3.745,
-    lng: -38.523
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API || ''
+  });
+  const handleButtonDialogClick = (id: number) => {
+    setDialogVisible(false);
+    HumanRequestService.closeRequest({ id });
+    router.refresh();
   };
-
   const dialogContent = selectedRequest ? (
-    <div className="flex">
-      <div className="flex-row">
-        <div className="photo-container m-1">
-          <img
-            src={selectedRequest.photo}
-            alt="Profile Photo"
-            style={{ width: '100%', height: 'auto' }}
-          />
-        </div>
-        <div className="align-items-start m-1 mb-3 text-start">
-          <div className="mt-3">
-            <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
-              >
-                <Marker position={center} />
-              </GoogleMap>
-            </LoadScript>
-          </div>
-        </div>
+    <div className="flex-row">
+      <div>
+        <img
+          src={selectedRequest.photo}
+          alt="Фото людини"
+          style={{ width: '200px', height: '200px' }}
+        />
+      </div>
+      <div>
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{
+              lat: selectedRequest.last_location_latitude,
+              lng: selectedRequest.last_location_longitude
+            }}
+            options={{
+              zoomControl: false,
+              scrollwheel: false,
+              disableDoubleClickZoom: true,
+              draggable: false,
+              streetViewControl: false,
+              mapTypeControl: false
+            }}
+            zoom={10}
+          >
+            <Marker
+              position={{
+                lat: selectedRequest.last_location_latitude,
+                lng: selectedRequest.last_location_longitude
+              }}
+            />
+          </GoogleMap>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="flex-column align-itmes-start m-1 mb-3 flex text-start">
         <div className="mb-3">
@@ -99,13 +117,20 @@ export default function Page({ params }: { params: { id: number } }) {
           <strong>Опис людини:</strong> {selectedRequest.description}
         </div>
         <div className="mb-3">
-          <strong>Контактна особа:</strong> {selectedRequest.last_name}{' '}
-          {selectedRequest.first_name} {selectedRequest.surname}
+          <strong>Контактна особа:</strong> {selectedRequest.contact_last_name}{' '}
+          {selectedRequest.contact_first_name} {selectedRequest.contact_surname}
         </div>
         <div className="mb-3">
           <strong>Контактна номер:</strong>{' '}
           {selectedRequest.contact_phone_number}
         </div>
+        <div className="mb-3">
+          <strong>Зроблені дії:</strong> {selectedRequest.completed_actions}
+        </div>
+        <Button
+          label="Знайдений"
+          onClick={() => handleButtonDialogClick(selectedRequest.id)}
+        />
       </div>
     </div>
   ) : null;
@@ -148,7 +173,7 @@ export default function Page({ params }: { params: { id: number } }) {
   return (
     <div className="col-12">
       <div className="card">
-        <h5>Список чепоінтів</h5>
+        <h5>Список чекпоінтів</h5>
         <DataTable
           value={checkpoints}
           expandedRows={expandedRows}

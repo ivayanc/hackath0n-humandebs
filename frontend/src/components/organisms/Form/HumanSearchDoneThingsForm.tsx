@@ -1,4 +1,4 @@
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import React, { useRef, useState } from 'react';
@@ -18,8 +18,8 @@ export default function HumanSearchDoneThingsForm() {
 
   const doneThingsInputRef = useRef<HTMLInputElement>(null);
   const [currentPosition, setCurrentPosition] = useState({
-    latitude: location.latitude ?? 50.4501, // Default latitude for Kyiv
-    longitude: location.longitude ?? 30.5234 // Default longitude for Kyiv
+    latitude: location.latitude ?? 48.58862829983634,
+    longitude: location.longitude ?? 37.83539730105749
   });
 
   const handleFormSubmission = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +40,10 @@ export default function HumanSearchDoneThingsForm() {
     width: '100%',
     height: '300px'
   };
-
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API || ''
+  });
   return (
     <div className="card p-fluid">
       <h5>Зроблені дії</h5>
@@ -54,7 +57,7 @@ export default function HumanSearchDoneThingsForm() {
             value={doneThings}
           />
         </div>
-        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
+        {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={{
@@ -73,7 +76,9 @@ export default function HumanSearchDoneThingsForm() {
               />
             )}
           </GoogleMap>
-        </LoadScript>
+        ) : (
+          <></>
+        )}
         <Button type="submit" label="Next" />
       </form>
     </div>

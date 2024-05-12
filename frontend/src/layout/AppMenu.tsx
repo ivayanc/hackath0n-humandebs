@@ -18,13 +18,23 @@ const AppMenu = () => {
       items: [
         {
           label: 'Список маршрутів',
-          icon: 'pi pi-fw pi-home',
-          to: '/volunteer/route-list'
+          icon: 'pi pi-fw pi-compass',
+          to: '/volunteer/route'
         },
         {
           label: 'Створити маршрут',
           icon: 'pi pi-fw pi-map',
-          to: '/volunteer/create-route'
+          to: '/volunteer/route/create'
+        }
+      ]
+    },
+    {
+      label: 'Запити',
+      items: [
+        {
+          icon: 'pi pi-fw pi-search',
+          label: 'Список зниклих людей',
+          to: '/volunteer/human-request'
         }
       ]
     }

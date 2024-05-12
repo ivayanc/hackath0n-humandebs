@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DataView } from 'primereact/dataview';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react';
 import type { Route } from '@/lib/services /RouteService';
 import { RouteService } from '@/lib/services /RouteService';
 import formatDate from '@/utils/format-date';
+import { secondsToHours } from '@/utils/seconds-to-hours';
 
 export default function RouteList() {
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -95,10 +97,14 @@ export default function RouteList() {
       <div className="col-12 lg:col-4">
         <div className="card border-1 surface-border m-3">
           <div className="flex-column align-items-center mb-3 flex text-center">
-            <div className="text-2xl font-bold">{data.route_location}</div>
+            <Link href={`/volunteer/route/${data.id}/checkpoints`}>
+              <div className="text-2xl font-bold">{data.route_location}</div>
+            </Link>
           </div>
           <div className="align-items-center justify-content-between flex">
-            <span className="text-2l">{data.route_time} год.</span>
+            <span className="text-2l">
+              {secondsToHours({ seconds: data.route_time })} год.
+            </span>
             <span className="text-2l">{formatDate(data.created_at)}</span>
           </div>
         </div>

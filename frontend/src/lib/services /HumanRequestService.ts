@@ -40,12 +40,19 @@ export interface HumanBackRequest {
   last_location_latitude: number;
   region: MainRegion;
   photo: string;
+  contact_last_name: string;
+  contact_surname: string;
+  contact_first_name: string;
   comments: HumanComment[];
 }
 
 export const HumanRequestService = {
   async getRequests({ id }: { id: number }) {
     return axiosInstance.get<HumanBackRequest[]>(`/requests/list/${id}/`);
+  },
+
+  async closeRequest({ id }: { id: number }) {
+    axiosInstance.post(`/requests/${id}/close/`);
   },
 
   async createRequest({ data }: { data: HumanRequest }) {

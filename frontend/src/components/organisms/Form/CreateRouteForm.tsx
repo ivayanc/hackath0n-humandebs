@@ -1,7 +1,8 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
-import React from 'react';
+import type { Messages } from 'primereact/messages';
+import React, { useRef } from 'react';
 
 interface Location {
   latitude: number | null;
@@ -42,7 +43,14 @@ const CreateRouteForm: React.FC<CreateRouteFormProps> = ({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API || ''
   });
+  const message = useRef<Messages>(null);
 
+  const addSuccessMessage = () => {
+    message.current?.show({
+      severity: 'success',
+      content: 'Успішно створений маршрут'
+    });
+  };
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
     const newLocation = {
       latitude: event.latLng?.lat() || null,
@@ -95,7 +103,7 @@ const CreateRouteForm: React.FC<CreateRouteFormProps> = ({
           />
         </div>
       </div>
-      <Button type="submit" label="Build Route" />
+      <Button onClick={addSuccessMessage} type="submit" label="Build Route" />
     </form>
   );
 };
