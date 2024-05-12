@@ -109,7 +109,7 @@ class AuthService:
     @staticmethod
     def verify_token_access(token: str, credentials_exception):
         try:
-            payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=ALGORITHM)
+            payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=AuthService.ALGORITHM)
 
             email: str = payload.get("email")
 
