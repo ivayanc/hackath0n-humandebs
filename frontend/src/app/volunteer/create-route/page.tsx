@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 
 import CreateRouteForm from '@/components/organisms/Form/CreateRouteForm';
 import { RouteService } from '@/lib/services /RouteService';
+import type { Location } from '@/redux/slice/humanSearchDoneThingsSlice';
 
 export default function Page() {
   const router = useRouter();
-  const [location, setLocation] = useState({
+  const [location, setLocation] = useState<Location>({
     latitude: 0,
     longitude: 0
   });

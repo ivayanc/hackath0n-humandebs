@@ -11,11 +11,19 @@ const AppMenu = () => {
   const model: AppMenuItem[] = [
     {
       label: 'Дім',
+      items: [{ label: 'Дашборд', icon: 'pi pi-fw pi-home', to: '/volunteer' }]
+    },
+    {
+      label: 'Маршрути',
       items: [
-        { label: 'Дашборд', icon: 'pi pi-fw pi-home', to: '/volunteer' },
+        {
+          label: 'Список маршрутів',
+          icon: 'pi pi-fw pi-home',
+          to: '/volunteer/route-list'
+        },
         {
           label: 'Створити маршрут',
-          icon: 'pi pi-fw pi-home',
+          icon: 'pi pi-fw pi-map',
           to: '/volunteer/create-route'
         }
       ]
