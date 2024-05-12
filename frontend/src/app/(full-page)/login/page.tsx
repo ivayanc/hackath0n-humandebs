@@ -28,7 +28,7 @@ const LoginPage = () => {
 
     try {
       await AuthService.login({ email, password });
-      router.push('/dashboard');
+      router.push('/volunteer');
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);

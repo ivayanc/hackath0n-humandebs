@@ -60,7 +60,7 @@ export default function HumanSearchDoneThingsForm() {
             center={{
               lat: currentPosition.latitude,
               lng: currentPosition.longitude
-            }} // Set initial center
+            }}
             zoom={10}
             onClick={handleMapClick}
           >

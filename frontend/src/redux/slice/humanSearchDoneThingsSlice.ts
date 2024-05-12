@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-interface Location {
+export interface Location {
   latitude: number | null;
   longitude: number | null;
 }
@@ -33,6 +33,6 @@ export const humanSearchDoneThingsSlice = createSlice({
   }
 });
 
-export const { addDoneThings, setLocation , resetSearchState} =
+export const { addDoneThings, setLocation, resetSearchState } =
   humanSearchDoneThingsSlice.actions;
 export default humanSearchDoneThingsSlice.reducer;

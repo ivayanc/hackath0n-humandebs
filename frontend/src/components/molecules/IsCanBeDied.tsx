@@ -8,7 +8,6 @@ export default function IsCanBeDied() {
   const dispatch = useAppDispatch();
 
   const onChange = e => {
-    // Dispatch action to update the canBeDied status in your Redux store
     dispatch(addCanBeDied(e.checked));
   };
 
