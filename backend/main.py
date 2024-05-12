@@ -7,11 +7,13 @@ from routers.regions import router as region_router
 from routers.requests import router as request_router
 from routers.routes import router as routes_router
 
+from configuration import ORIGINS
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

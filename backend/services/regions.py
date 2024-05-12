@@ -43,3 +43,19 @@ class RegionsService:
             results.append((region.latitude, region.longitude, distance, region.id))
         results = sorted(results, key = lambda x: x[2])
         return results
+
+    @staticmethod
+    def get_top5_regions() -> list[dict]:
+        from services.requests import RequestService
+
+        regions = RegionsService.list()
+        response = []
+        for region in regions:
+            response.append(
+                {
+                    "region_name": region.region_name,
+                    "open_requests": RequestService.count_requests_in_region(region.id)
+                }
+            )
+        response = sorted(response, key=lambda x: x['open_requests'], reverse=True)
+        return response[:5]
