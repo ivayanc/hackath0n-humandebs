@@ -11,7 +11,14 @@ const AppMenu = () => {
   const model: AppMenuItem[] = [
     {
       label: 'Дім',
-      items: [{ label: 'Дашборд', icon: 'pi pi-fw pi-home', to: '/' }]
+      items: [
+        { label: 'Дашборд', icon: 'pi pi-fw pi-home', to: '/volunteer' },
+        {
+          label: 'Створити маршрут',
+          icon: 'pi pi-fw pi-home',
+          to: '/volunteer/create-route'
+        }
+      ]
     }
   ];
 
