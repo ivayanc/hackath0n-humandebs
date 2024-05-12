@@ -37,7 +37,6 @@ export default function RouteList() {
   }, [router]);
   useEffect(() => {
     RouteService.getAllRoutes().then(data => setRoutes(data.data));
-    console.log(routes);
     setGlobalFilterValue('');
   }, []);
 

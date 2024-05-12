@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import { axiosInstance } from '@/http/api';
+import type { MainRegion } from '@/lib/services /CheckpointService';
+
 export interface HumanRequest {
   firstName: string | undefined;
   lastName: string | undefined;
@@ -18,7 +21,33 @@ export interface HumanRequest {
   longitude: number | null;
 }
 
+export interface HumanComment {
+  id: number;
+}
+
+export interface HumanBackRequest {
+  id: number;
+  first_name: string;
+  last_name: string;
+  surname: string;
+  description: string;
+  completed_actions: string;
+  phone_number: string;
+  contact_phone_number: string;
+  probably_dead: boolean;
+  is_soldier: boolean;
+  last_location_longitude: number;
+  last_location_latitude: number;
+  region: MainRegion;
+  photo: string;
+  comments: HumanComment[];
+}
+
 export const HumanRequestService = {
+  async getRequests({ id }: { id: number }) {
+    return axiosInstance.get<HumanBackRequest[]>(`/requests/list/${id}/`);
+  },
+
   async createRequest({ data }: { data: HumanRequest }) {
     const uploadedFileInfo = await axios.post(
       `${process.env.NEXT_PUBLIC_BACK_URL}/public_api/upload/file/`,
@@ -40,9 +69,9 @@ export const HumanRequestService = {
       attachment_id: parsedUploadedFileInfo.id,
       contact_first_name: data.contactFirstName,
       contact_last_name: data.contactLastName,
-      contact_surname: data.contactFathersName,
+      contact_surname: data.contactFathersName
     };
-    return await axios.post(
+    return axios.post(
       `${process.env.NEXT_PUBLIC_BACK_URL}/public_api/request/create/`,
       createData
     );
