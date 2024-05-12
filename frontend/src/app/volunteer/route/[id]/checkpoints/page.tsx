@@ -68,15 +68,15 @@ export default function Page({ params }: { params: { id: number } }) {
     router.refresh();
   };
   const dialogContent = selectedRequest ? (
-    <div className="flex-row">
-      <div>
+    <div className="grid">
+      <div className="m-3">
         <img
           src={selectedRequest.photo}
           alt="Фото людини"
           style={{ width: '200px', height: '200px' }}
         />
       </div>
-      <div>
+      <div className="m-3">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}

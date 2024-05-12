@@ -27,16 +27,6 @@ const AppMenu = () => {
           to: '/volunteer/route/create'
         }
       ]
-    },
-    {
-      label: 'Запити',
-      items: [
-        {
-          icon: 'pi pi-fw pi-search',
-          label: 'Список зниклих людей',
-          to: '/volunteer/human-request'
-        }
-      ]
     }
   ];
 
