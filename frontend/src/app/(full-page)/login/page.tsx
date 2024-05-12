@@ -8,8 +8,10 @@ import { classNames } from 'primereact/utils';
 import React, { useContext, useState } from 'react';
 
 import { LayoutContext } from '@/layout/context/layoutcontext';
+import { AuthService } from '@/lib/services /AuthService';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { layoutConfig } = useContext(LayoutContext);
 
@@ -18,6 +20,21 @@ const LoginPage = () => {
     'surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden',
     { 'p-input-filled': layoutConfig.inputStyle === 'filled' }
   );
+
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      return;
+    }
+
+    try {
+      await AuthService.login({ email, password });
+      router.push('/dashboard');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  };
 
   return (
     <div
@@ -51,9 +68,11 @@ const LoginPage = () => {
                 Email
               </label>
               <InputText
+                required
                 id="email1"
                 type="text"
                 placeholder="Email address"
+                onChange={e => setEmail(e.target.value)}
                 className="md:w-30rem mb-5 w-full"
                 style={{ padding: '1rem' }}
               />
@@ -64,6 +83,7 @@ const LoginPage = () => {
                 Password
               </label>
               <Password
+                required
                 inputId="password1"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -74,17 +94,12 @@ const LoginPage = () => {
                 feedback={false}
               />
               <div className="align-items-center justify-content-between mb-5 flex gap-5">
-                <a
-                  className="ml-2 cursor-pointer text-right font-medium no-underline"
-                  style={{ color: 'var(--primary-color)' }}
-                >
-                  Forgot password?
-                </a>
+                <div className="align-items-center flex" />
               </div>
               <Button
-                label="Sign In"
+                label="Увійти"
                 className="w-full p-3 text-xl"
-                onClick={() => router.push('/')}
+                onClick={handleSubmit}
               />
             </div>
           </div>

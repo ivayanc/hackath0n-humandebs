@@ -29,10 +29,11 @@ export const humanBaseInfoSlice = createSlice({
     },
     addPhone: (state, action: PayloadAction<string>) => {
       state.phoneNumber = action.payload;
-    }
+    },
+    resetAddState: () => initialState
   }
 });
 
-export const { addFirstName, addLastName, addFatherName, addPhone } =
+export const { addFirstName, addLastName, addFatherName, addPhone, resetAddState } =
   humanBaseInfoSlice.actions;
 export default humanBaseInfoSlice.reducer;

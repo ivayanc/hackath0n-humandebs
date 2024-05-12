@@ -1,16 +1,24 @@
 import { GoogleMap } from '@react-google-maps/api';
-import Link from 'next/link';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+import React, { useRef } from 'react';
 
 import Text from '@/components/atoms/Text';
-import { useAppSelector } from '@/hooks/useApp';
+import { useAppDispatch, useAppSelector } from '@/hooks/useApp';
 import type { HumanRequest } from '@/lib/services /HumanRequestService';
 import { HumanRequestService } from '@/lib/services /HumanRequestService';
+import { resetBaseState } from '@/redux/slice/humanAddInfoSlice';
+import { resetAddState } from '@/redux/slice/humanBaseInfoSlice';
+import { resetContactState } from '@/redux/slice/humanContactInfoSlice';
+import { resetSearchState } from '@/redux/slice/humanSearchDoneThingsSlice';
+import { resetStepState } from '@/redux/slice/stepSlice';
 
 export default function HumanSearchSummary() {
+  const dispatch = useAppDispatch();
   const { firstName, lastName, fatherName, phoneNumber } = useAppSelector(
     state => state.baseInfo
   );
+  const toast = useRef<Toast>(null); // Modify
   const {
     contactFirstName,
     contactLastName,
@@ -41,15 +49,35 @@ export default function HumanSearchSummary() {
     longitude: location.longitude,
     latitude: location.latitude
   };
-  const handleConfirm = () => {
-    HumanRequestService.createRequest({ data: createData });
+  const handleConfirm = async () => {
+    try {
+      await HumanRequestService.createRequest({ data: createData });
+      dispatch(resetBaseState());
+      dispatch(resetSearchState());
+      dispatch(resetAddState());
+      dispatch(resetContactState());
+      dispatch(resetStepState());
+
+      toast.current?.show({
+        severity: 'info',
+        summary: 'Success',
+        detail: 'Успішно відправлено запит',
+        life: 3000
+      });
+    } catch (error) {
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to send request',
+        life: 3000
+      });
+    }
   };
 
   const containerStyle = {
     width: '100%',
     height: '300px'
   };
-  console.log(location.latitude, location.longitude);
   return (
     <div className="card p-fluid">
       <h5>Підтвердьте інформацію</h5>
@@ -114,9 +142,8 @@ export default function HumanSearchSummary() {
           />
         )}
       </div>
-      <Link href="/">
-        <Button label="Підтвердити" onClick={handleConfirm} />
-      </Link>
+      <Button label="Підтвердити" onClick={handleConfirm} />
+      <Toast ref={toast} />
     </div>
   );
 }

@@ -28,10 +28,11 @@ export const humanSearchDoneThingsSlice = createSlice({
     },
     setLocation: (state, action: PayloadAction<Location>) => {
       state.location = action.payload;
-    }
+    },
+    resetSearchState: () => initialState
   }
 });
 
-export const { addDoneThings, setLocation } =
+export const { addDoneThings, setLocation , resetSearchState} =
   humanSearchDoneThingsSlice.actions;
 export default humanSearchDoneThingsSlice.reducer;

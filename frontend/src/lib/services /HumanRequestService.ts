@@ -37,9 +37,12 @@ export const HumanRequestService = {
       is_soldier: data.military,
       last_location_longitude: data.longitude,
       last_location_latitude: data.longitude,
-      attachment_id: parsedUploadedFileInfo.id
+      attachment_id: parsedUploadedFileInfo.id,
+      contact_first_name: data.contactFirstName,
+      contact_last_name: data.contactLastName,
+      contact_surname: data.contactFathersName,
     };
-    await axios.post(
+    return await axios.post(
       `${process.env.NEXT_PUBLIC_BACK_URL}/public_api/request/create/`,
       createData
     );

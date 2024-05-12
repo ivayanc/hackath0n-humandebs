@@ -29,10 +29,11 @@ export const humanAddInfoSlice = createSlice({
     },
     addHumanImage: (state, action: PayloadAction<string>) => {
       state.humanImage = action.payload;
-    }
+    },
+    resetBaseState: () => initialState
   }
 });
 
-export const { addHumanDesc, addCanBeDied, addMilitary, addHumanImage } =
+export const { addHumanDesc, addCanBeDied, addMilitary, addHumanImage , resetBaseState} =
   humanAddInfoSlice.actions;
 export default humanAddInfoSlice.reducer;

@@ -14,8 +14,7 @@ export default function HumanAddInfoForm() {
   const dispatch = useAppDispatch();
   const { humanDesc } = useAppSelector(state => state.addInfo);
   const humanDescInputRef = useRef<HTMLInputElement>(null);
-  const toast = useRef<Toast>(null); // Modify this line to specify the correct type
-
+  const toast = useRef<Toast>(null);
   const handleFormSubmission = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!humanDescInputRef.current) return;

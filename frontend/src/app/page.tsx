@@ -6,12 +6,12 @@ import { Button } from 'primereact/button';
 import { StyleClass } from 'primereact/styleclass';
 import { classNames } from 'primereact/utils';
 import type { MutableRefObject, ReactNode } from 'react';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import type { InfoCardProps } from '@/components/molecules/InfoCard';
-import type { RegionStat } from '@/components/molecules/RegionTable';
 import HomePageTemplate from '@/components/templates/HomePageTemplate';
 import { LayoutContext } from '@/layout/context/layoutcontext';
+import type { Dashboard } from '@/lib/services /DashboardService';
+import { DashboardService } from '@/lib/services /DashboardService';
 
 export type NodeRef = MutableRefObject<ReactNode>;
 
@@ -19,40 +19,24 @@ const LandingPage = () => {
   const [isHidden, setIsHidden] = useState(false);
   const { layoutConfig } = useContext(LayoutContext);
   const menuRef = useRef<HTMLElement | null>(null);
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const data = await DashboardService.getDashboards();
+        setDashboard(data);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
 
   const toggleMenuItemClick = () => {
     setIsHidden(prevState => !prevState);
   };
-
-  const stats: InfoCardProps[] = [
-    {
-      iconName: 'icon-person',
-      iconColor: '',
-      label: 'Кількість знайдених людей',
-      count: 1222
-    },
-    {
-      iconName: 'icon-phone',
-      iconColor: '',
-      label: 'Кількість зниклих людей',
-      count: 2222
-    },
-    {
-      iconName: 'icon-help',
-      iconColor: '',
-      label: 'Кількість активних волонтерів',
-      count: 222
-    }
-  ];
-
-  const tableData: RegionStat[] = [
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 },
-    { rgName: 'Область1', rgStatus: 'Звільнена', rgCount: 71 }
-  ];
 
   return (
     <div className="surface-0 justify-content-center flex">
@@ -95,7 +79,14 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="flex-auto p-3">
-          <HomePageTemplate stats={stats} listRegionData={tableData} />
+          {dashboard && (
+            <HomePageTemplate
+              active_requests={dashboard.active_requests}
+              active_volunteers={dashboard.active_volunteers}
+              closed_requests={dashboard.closed_requests}
+              listRegionData={dashboard.top5_regions}
+            />
+          )}
         </div>
         <div className="mx-0 mt-8 p-4 lg:mx-8">
           <div className="justify-content-between grid">

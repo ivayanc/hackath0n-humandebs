@@ -21,9 +21,10 @@ export const stepsSlice = createSlice({
   reducers: {
     changeStep: (state, action: PayloadAction<Steps>) => {
       state.activeStep = action.payload;
-    }
+    },
+    resetStepState: () => initialState
   }
 });
 
-export const { changeStep } = stepsSlice.actions;
+export const { changeStep ,resetStepState} = stepsSlice.actions;
 export default stepsSlice.reducer;

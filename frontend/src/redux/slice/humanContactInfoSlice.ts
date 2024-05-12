@@ -29,7 +29,8 @@ export const humanContactInfoSlice = createSlice({
     },
     addContactPhone: (state, action: PayloadAction<string>) => {
       state.contactPhone = action.payload;
-    }
+    },
+    resetContactState: () => initialState
   }
 });
 
@@ -37,6 +38,7 @@ export const {
   addContactFirstName,
   addContactLastName,
   addContactFathersName,
-  addContactPhone
+  addContactPhone,
+    resetContactState,
 } = humanContactInfoSlice.actions;
 export default humanContactInfoSlice.reducer;
